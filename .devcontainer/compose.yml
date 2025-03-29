@@ -1,0 +1,45 @@
+version: '1.0'
+
+services:
+  qatools-postgres:
+    container_name: qatools_postgres
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile_postgres
+      args:
+        UID: 1000
+        GID: 1000
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: qatools
+      POSTGRES_PASSWORD: 6v@lu@t!0n
+      POSTGRES_DB: dev
+      DB_LANG: ja_JP.utf8
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      -  postgres-data-volume:/var/lib/postgresql/data:rw
+      - ./scripts_postgres_init:/docker-entrypoint-initdb.d:rw
+  qatools:
+    container_name: qatools
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile_qatools
+    environment:
+      DBT_HOST: qatools_postgres
+      DBT_PORT: 5432
+      DBT_USER: qatools
+      DBT_PASSWORD: 6v@lu@t!0n
+      DBT_DB: dev
+      DBT_SCHEMA: qatools
+    volumes:
+      - ../app:/workspace/app:rw
+    tty: true
+
+volumes:
+  postgres-data-volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./volume_postgres

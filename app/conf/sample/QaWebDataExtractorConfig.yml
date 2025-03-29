@@ -1,0 +1,12 @@
+QAWebInfo:
+  site: "https://qasite.local"
+  loginPage: "/QA/login.pl"
+  menuPage: "/QA//menu.pl"
+  csvPage: "/QA/csvout.pl"
+  categoryParam: "prj"
+  category: "PRJ1"
+  authInfo:
+    user: "xxxxx"
+    password: "xxxxx"
+scriptSettings:
+  recordsPerRequest: 100

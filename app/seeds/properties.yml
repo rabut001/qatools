@@ -1,0 +1,208 @@
+version: 2
+
+seeds:
+  - name: seed_qaweb__incidents
+    description: incident data extracted from QAWeb system.
+    tests:
+      - unique: 
+          column_name: incident_id
+    config:
+      column_types:
+        incident_id: text
+        title: text
+        incident_div: text
+        category: text
+        category2: text
+        category3: text
+        hospital: text
+        registered_by: text
+        registered_date: text
+        impact: text
+        impact_by_register: text
+        related_incident: text
+        description: text
+        assigned_to: text
+        solution_div: text
+        latest_comment_by: text
+        latest_comment_date: text
+        first_response_date: text
+        patch_no: text
+        close_date: text
+        status: text
+        server: text
+        version: text
+        version_ehr: text
+        comment_div: text
+        last_updated_date: text
+        approved_date: text
+        delivery_planned_date: text
+        comment_history: text
+        critical: text
+        event: text
+        event_date: text
+        external_case_id: text
+        additional_item1: text
+        additional_item2: text
+        additional_item3: text
+        additional_item4: text
+  - name: seed_qaweb__incident_comments
+    description: comment history of each incident.
+    tests:
+      - unique: 
+          column_name: "incident_id || '_' || to_char(comment_seq, 'FM0000')"
+    config:
+      column_types:
+        incident_id: text
+        comment_seq: int
+        comment_div: text
+        comment_by: text
+        comment: text
+  - name: seed_qaweb__mst_comment_div
+    description: master table for comment div
+    tests:
+      - unique: 
+          column_name: comment_div
+    config:
+      column_types:
+        comment_div: text
+        ball_on: text
+        is_closer: bool
+        is_approver: bool
+        is_patch_planned: bool
+        is_response: bool
+  - name: seed_qaweb__mst_user_dwh_dev
+    description: the user list of DWH developer team.
+    tests:
+      - unique:
+          column_name: user_name
+    config:
+      column_types:
+        user_name: text
+  - name: seed_qaweb__mst_user_name_adjust
+    description: master to gather user names of a person who has several names in QAWeb system
+    tests:
+      - unique:
+          column_name: user_name
+    config:
+      column_types:
+        user_name: text
+        user_name_adjusted: text
+  - name: adjust__base_qaweb__incidents__before
+    description: before image of incidents for data adjustment.
+    tests:
+      - unique:
+          column_name: incident_id
+    config:
+      schema: system
+      column_types:
+        incident_id: text
+        title: text
+        incident_div: text
+        category: text
+        category2: text
+        category3: text
+        hospital: text
+        registered_by: text
+        registered_date: date
+        impact: text
+        impact_by_register: text
+        related_incident: text
+        description: text
+        assigned_to: text
+        solution_div: text
+        latest_comment_by: text
+        latest_comment_date: date
+        first_response_date: date
+        patch_no: text
+        close_date: date
+        status: text
+        server: text
+        version: text
+        version_ehr: text
+        comment_div: text
+        last_updated_date: date
+        approved_date: date
+        delivery_planned_date: date
+        comment_history: text
+        critical: text
+        event: text
+        event_date: date
+        external_case_id: text
+        additional_item1: text
+        additional_item2: text
+        additional_item3: text
+        additional_item4: text
+  - name: adjust__base_qaweb__incidents__after
+    description: after image of incidents for data adjustment.
+    tests:
+      - unique:
+          column_name: incident_id
+    config:
+      schema: system
+      column_types:
+        incident_id: text
+        title: text
+        incident_div: text
+        category: text
+        category2: text
+        category3: text
+        hospital: text
+        registered_by: text
+        registered_date: date
+        impact: text
+        impact_by_register: text
+        related_incident: text
+        description: text
+        assigned_to: text
+        solution_div: text
+        latest_comment_by: text
+        latest_comment_date: date
+        first_response_date: date
+        patch_no: text
+        close_date: date
+        status: text
+        server: text
+        version: text
+        version_ehr: text
+        comment_div: text
+        last_updated_date: date
+        approved_date: date
+        delivery_planned_date: date
+        comment_history: text
+        critical: text
+        event: text
+        event_date: date
+        external_case_id: text
+        additional_item1: text
+        additional_item2: text
+        additional_item3: text
+        additional_item4: text
+  - name: adjust__base_qaweb__incident_comments__before
+    description: before image of incident comment for data adjustment.
+    tests:
+      - unique:
+          column_name: "incident_id || '_' || to_char(comment_seq, 'FM0000')"
+    config:
+      schema: system
+      column_types:
+        incident_id: text
+        comment_seq: int
+        comment_div: text
+        comment_by: text
+        comment_date: date
+        comment: text
+  - name: adjust__base_qaweb__incident_comments__after
+    description: after image of incident comment for data adjustment.
+    tests:
+      - unique:
+          column_name: "incident_id || '_' || to_char(comment_seq, 'FM0000')"
+    config:
+      schema: system
+      column_types:
+        incident_id: text
+        comment_seq: int
+        comment_div: text
+        comment_by: text
+        comment_date: date
+        comment: text
+

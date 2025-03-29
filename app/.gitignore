@@ -1,0 +1,12 @@
+__pycache__/
+/conf/*
+!/conf/sample
+/dbt_packages/**
+/logs/**
+/work/**
+/target/**
+/seeds/*
+!/seeds/properties.yml
+!/seeds/sample
+!/**/.gitkeep
+

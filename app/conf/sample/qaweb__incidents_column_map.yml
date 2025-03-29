@@ -1,0 +1,108 @@
+column_map:
+  - name: incident_id
+    type: map
+    source: 管理NO
+  - name: title
+    type: map
+    source: 件名
+  - name: incident_div
+    type: map
+    source: カテゴリ
+  - name: category
+    type: map
+    source: 機能カテゴリ
+  - name: category2
+    type: blank
+  - name: category3
+    type: blank
+  - name: hospital
+    type: map
+    source: プロジェクト
+  - name: registered_by
+    type: map
+    source: 報告者
+  - name: registered_date
+    type: map
+    source: 報告日
+  - name: impact
+    type: map
+    source: 影響
+  - name: impact_by_register
+    type: blank
+  - name: related_incident
+    type: map
+    source: 関連QA
+  - name: description
+    type: map
+    source: 内容
+  - name: assigned_to
+    type: map
+    source: 担当
+  - name: solution_div
+    type: map
+    source: 対応区分
+  - name: latest_comment_by
+    type: map
+    source: 最新回答記入者
+  - name: latest_comment_date
+    type: map
+    source: 最新回答日
+  - name: first_response_date
+    type: map
+    source: 着手回答日
+  - name: patch_no
+    type: map
+    source: 修正NO
+  - name: close_date
+    type: map
+    source: 完了日
+  - name: status
+    type: map
+    source: 状況
+  - name: server
+    type: map
+    source: サーバー
+  - name: version
+    type: map
+    source: バージョン
+  - name: version_ehr
+    type: blank
+  - name: comment_div
+    type: map
+    source: 回答カテゴリ
+  - name: last_updated_date
+    type: map
+    source: 最終更新日
+  - name: approved_date
+    type: map
+    source: 承認日
+  - name: delivery_planned_date
+    type: map
+    source: 提供待ちコメント日
+  - name: comment_history
+    type: map
+    source: 回答履歴
+  - name: critical
+    type: map
+    source: 人命
+  - name: event
+    type: map
+    source: イベント
+  - name: event_date
+    type: map
+    source: イベント発生日
+  - name: external_case_id
+    type: map
+    source: CaseID
+  - name: additional_item1
+    type: map
+    source: 管理項目1
+  - name: additional_item2
+    type: map
+    source: 管理項目2
+  - name: additional_item3
+    type: map
+    source: 管理項目3
+  - name: additional_item4
+    type: map
+    source: 管理項目4

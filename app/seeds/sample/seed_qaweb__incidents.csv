@@ -1,0 +1,8 @@
+﻿incident_id,title,incident_div,category,category2,category3,hospital,registered_by,registered_date,impact,impact_by_register,related_incident,description,assigned_to,solution_div,latest_comment_by,latest_comment_date,first_response_date,patch_no,close_date,status,server,version,version_ehr,comment_div,last_updated_date,approved_date,delivery_planned_date,comment_history,critical,event,event_date,external_case_id,additional_item1,additional_item2,additional_item3,additional_item4
+LXDQ-000001,【質問】〇〇を××する方法について,質問,その他,,,A病院,松山さん,2025/2/13,中,,,"○○を××したいのですが、方法が分かりません。
+どうやったらいいか教えてください。",Aチーム)田中,提供ドキュメントに記載あり,Aチーム)田中,2025/2/14,2025/2/14,,2025/2/14,承認,〇〇サーバ,XX.X,,完了回答,2025/2/14,2025/2/14,,"△△に、○○を××する方法を記載したドキュメントがございます。
+以下のURLより入手できますので、ご確認をお願いいたします。
+http://xxxxxxx(発信者へ差戻し:Aチーム)田中 2024/02/13)
+提示いただいたドキュメントにより××できました。ありがとうございます。(回答者へ差戻し:松山さん 2025/02/14)
+ご連絡有難うございます。本件、クローズさせて頂きます。(完了回答:チームA)田中 2025/02/14)
+",,0,yyyy/mm/dd,,,,,

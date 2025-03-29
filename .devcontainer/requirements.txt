@@ -1,0 +1,7 @@
+sqlfluff
+dbt-postgres
+sqlfluff-templater-dbt
+pip_system_certs
+pandas
+requests
+pytest-cov

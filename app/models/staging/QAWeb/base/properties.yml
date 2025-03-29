@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: base_qaweb__incidents
+    description: "Base table for QAWeb incidents"
+    config:
+      unique_key: incident_id
+    columns:
+      - name: incident_id
+      - name: title
+      - name: incident_div
+      - name: category
+      - name: category2
+      - name: category3
+      - name: hospital
+      - name: registered_by
+      - name: registered_date
+      - name: impact
+      - name: impact_by_register
+      - name: related_incident
+      - name: description
+      - name: assigned_to
+      - name: solution_div
+      - name: latest_comment_by
+      - name: latest_comment_date
+      - name: first_response_date
+      - name: patch_no
+      - name: close_date
+      - name: status
+      - name: server
+      - name: version
+      - name: version_ehr
+      - name: comment_div
+      - name: last_updated_date
+      - name: approved_date
+      - name: delivery_planed_date
+      - name: comment_history
+      - name: critical
+      - name: event
+      - name: event_date
+      - name: external_case_id
+      - name: additional_item1
+      - name: additional_item2
+      - name: additional_item3
+      - name: additional_item4
+  - name: base_qaweb__incident_comments
+    description: "Base table for comment history of QAWeb incidents"
+    config:
+      unique_key: 
+        - incident_id
+        - comment_seq
+    columns:
+      - name: incident_id
+      - name: comment_seq
+      - name: comment_div
+      - name: comment_by
+      - name: domment_date
+      - name: comment

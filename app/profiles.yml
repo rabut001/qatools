@@ -1,0 +1,14 @@
+qatools:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: 10
+      host: "{{ env_var('DBT_HOST') }}"
+      port: "{{ env_var('DBT_PORT') | int }}"
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      dbname: "{{ env_var('DBT_DB') }}"
+      schema: "{{ env_var('DBT_SCHEMA') }}"
+
+  target: dev

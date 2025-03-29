@@ -1,0 +1,47 @@
+[sqlfluff]
+dialect = postgres 
+
+# templaterにdbtを指定する場合はプラグインのインストールが必要です（後述）
+templater = dbt
+
+# SQLFluffで定義されているcoreルールのみを使用する
+# https://docs.sqlfluff.com/en/stable/rules.html#core-rules
+rules = core
+
+# dbt templaterの設定
+# https://docs.sqlfluff.com/en/stable/configuration.html#installation-configuration
+[sqlfluff:templater:dbt]
+# 環境に合った設定をする
+project_dir = ./
+profiles_dir = ./ 
+profile = qatools
+target = dev
+
+# 各種ruleについては以下を参照
+# https://docs.sqlfluff.com/en/stable/rules.html:title
+[sqlfluff:indentation]
+allow_implicit_indents = true
+
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.identifiers]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = lower
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = lower
+
+[sqlfluff:rules:ambiguous.column_references]
+group_by_and_order_by_style = implicit

@@ -1,0 +1,34 @@
+name: 'QATools'
+
+config-version: 2
+version: '1.0'
+
+profile: 'qatools'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+analysis-paths: ["analysis"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+    - "target"
+    - "dbt_modules"
+    - "logs"
+
+models:
+  QATools:
+    staging:
+      QAWeb:
+        materialized: table
+    intermediate:
+      materialized: table
+    marts:
+      materialized: view
+      mart_general:
+        +schema: mart_general
+
+vars:
+  mart_scope_years : 2
+

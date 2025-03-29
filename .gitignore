@@ -1,0 +1,7 @@
+/.devcontainer/certificates/**
+/.devcontainer/volume_postgres/**
+/memo/**
+!/**/.gitkeep
+
+
+

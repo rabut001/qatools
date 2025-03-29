@@ -1,0 +1,42 @@
+{
+  "name": "QATools",
+  "workspaceFolder": "/workspace",
+  "dockerComposeFile": [
+    "./compose.yml"
+  ],
+  "service": "qatools",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dorzey.vscode-sqlfluff",
+        "innoverio.vscode-dbt-power-user",
+        "ms-python.pylint",
+        "mechatroner.rainbow-csv"
+      ],
+      "settings": {
+        "dev.containers.executeInWSL": true,
+        "pylint.enabled":true,
+        "python.testing.pytestEnabled": true,
+        "sqlfluff.config": "${workspaceFolder}/app/.sqlfluff",
+        "sqlfluff.linter.run": "onSave",
+        "sqlfluff.experimental.format.executeInTerminal": true,
+        "editor.formatOnSave": false,
+        "files.associations": {
+            "*.sql": "jinja-sql"
+        },
+        "[jinja-sql]": {
+            "editor.defaultFormatter": "dorzey.vscode-sqlfluff"
+        },
+        "keybindings": [
+            {
+                "key": "ctrl+enter",
+                "command": "github.copilot.generate",
+                "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused && !(resourceLangId =~ /^sql$|^jinja-sql$/)"
+            }
+        ]
+      }
+    }
+  },
+  "postCreateCommand": "dbt deps --project-dir app"
+}
+

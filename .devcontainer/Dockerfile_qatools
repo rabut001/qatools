@@ -3,6 +3,7 @@ FROM python:3.13-slim
 # Install git
 RUN apt-get update &&  \
     apt-get install -y \
+    sudo \
     ca-certificates \
     postgresql-client \
     git && \
@@ -12,7 +13,7 @@ RUN apt-get update &&  \
 # Set separate working directory for easier debugging.
 WORKDIR /app
 
-# Add custom CAs (for Fujitsu SIG)
+# Add custom CAs (for GlobalProtect SIG)
 COPY ./.devcontainer/certificates/* /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
@@ -24,11 +25,18 @@ RUN pip install --upgrade certifi
 COPY /.devcontainer/requirements.txt /tmp/
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-# Add custom CAs (for Fujitsu SIG) to Python environment.
+# Add custom CAs (for GlobalProtect SIG) to Python environment.
 RUN ls /usr/local/share/ca-certificates/*  | xargs cat >> $(python -m certifi)
 
-# Switch to new working directory as default bind mount location.
-WORKDIR /workspace
+# adsjust user and group id to match host.
+ARG REMOTE_USER
+ARG UID
+ARG GID
 
-# Set SQLFluff command for image.
-CMD ["bash"]
+RUN groupadd --gid ${GID} ${REMOTE_USER}
+RUN useradd --uid ${UID} --gid ${GID} -s /bin/bash -m ${REMOTE_USER}
+RUN echo ${REMOTE_USER} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${REMOTE_USER} \
+    && chmod 0440 /etc/sudoers.d/${REMOTE_USER}
+
+USER ${REMOTE_USER}
+WORKDIR /workspace

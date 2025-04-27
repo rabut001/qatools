@@ -1,9 +1,11 @@
+name: devcontainer
 services:
   qatools-postgres:
     container_name: qatools_postgres
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile_postgres
+    image: qatools_postgres
     ports:
       - '5433:5432'
     environment:
@@ -22,6 +24,11 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile_qatools
+      args:
+        REMOTE_USER: vscode
+        UID: 1000
+        GID: 1000
+    image: qatools
     environment:
       DBT_HOST: qatools_postgres
       DBT_PORT: 5432
@@ -32,6 +39,7 @@ services:
     volumes:
       - ../app:/workspace/app:rw
     tty: true
+
 
 volumes:
   qatools_data_volume:

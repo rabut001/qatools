@@ -1,5 +1,7 @@
 {
-  "name": "QATools",
+  "name": "qatools",
+  "remoteUser": "vscode",
+  "updateRemoteUserUID": false,
   "workspaceFolder": "/workspace",
   "dockerComposeFile": [
     "./compose.yml"

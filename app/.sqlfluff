@@ -1,6 +1,8 @@
 [sqlfluff]
-dialect = postgres 
-exclude_rules = AM06
+dialect = postgres
+max_line_length = 120
+# AM06(group by句の列参照整合性チェック) 誤検知頻発のため無効化
+exclude_rules = AM06 
 
 # templaterにdbtを指定する場合はプラグインのインストールが必要です（後述）
 templater = dbt

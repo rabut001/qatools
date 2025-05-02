@@ -41,7 +41,7 @@ max_comment as (
 
 direct_close as (
     select
-        i.incident_id || to_char(c.comment_seq + 1, 'FM0000') as comment_id,
+        i.incident_id || '_' || to_char(c.comment_seq + 1, 'FM0000') as comment_id,
         i.incident_id,
         c.comment_seq + 1 as comment_seq,
         '完了へ直接変更' as comment_div,

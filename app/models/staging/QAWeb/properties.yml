@@ -1,0 +1,120 @@
+version: 2
+
+models:
+  - name: stg_qaweb__incident_comments
+    description: "a model that contains the comment history of each incident."
+    tests:
+      - unique: 
+          column_name: comment_id
+    columns:
+      - name: comment_id
+        description: "A unique identifier for the comment (a combination of incident_id and comment_seq)."
+      - name: incident_id
+        description: "A unique identifier for the related incident."
+      - name: comment_seq
+        description: "The sequence number of the comment."
+      - name: comment_div
+        description: "The category of the comment (e.g.「完了」(A closure comment for the incident))."
+      - name: comment_by
+        description: "The user or entity that created the comment."
+      - name: comment_date
+        description: "The date and time when the comment was created."
+      - name: comment
+        description: "The content of the comment."
+
+
+unit_tests:
+  - name: basic_pattern
+    model: stg_qaweb__incident_comments
+    given:
+      - input: ref("stg_qaweb__incidents")
+        rows:
+        - {incident_id: "I001", close_date: "2025-01-02"}
+      - input: ref("seed_qaweb__mst_comment_div")
+        rows:
+        - {comment_div: "register", is_closer: false, is_approver: false}
+        - {comment_div: "close", is_closer: true, is_approver: false}
+    overrides:
+      macros:
+        get_adjusted_data: |
+          select * from
+            (values 
+              ('I001', 1, 'register', 'John', '2025-01-01'::date, 'comment 1'),
+              ('I001', 2, 'close', 'Mike', '2025-01-02'::date, 'comment 2')
+            ) as t(incident_id, comment_seq, comment_div, comment_by, comment_date, comment)
+    expect:
+      rows:
+        - {comment_id: "I001_0001", incident_id: "I001", comment_seq: 1, comment_div: "register", comment_by: "John", comment_date: "2025-01-01", comment: "comment 1"}
+        - {comment_id: "I001_0002", incident_id: "I001", comment_seq: 2, comment_div: "close", comment_by: "Mike", comment_date: "2025-01-02", comment: "comment 2"}
+  
+  - name: direct_close_basic
+    model: stg_qaweb__incident_comments
+    given:
+      - input: ref("stg_qaweb__incidents")
+        rows:
+        - {incident_id: "I001", close_date: "2025-01-03"}
+      - input: ref("seed_qaweb__mst_comment_div")
+        rows:
+        - {comment_div: "register", is_closer: false, is_approver: false}
+        - {comment_div: "reply_to_register", is_closer: false, is_approver: false}
+    overrides:
+      macros:
+        get_adjusted_data: |
+          select * from
+            (values 
+              ('I001', 1, 'register', 'John', '2025-01-01'::date, 'comment 1'),
+              ('I001', 2, 'reply_to_register', 'Mike', '2025-01-02'::date, 'comment 2')
+            ) as t(incident_id, comment_seq, comment_div, comment_by, comment_date, comment)
+    expect:
+      rows:
+        - {comment_id: "I001_0001", incident_id: "I001", comment_seq: 1, comment_div: "register", comment_by: "John", comment_date: "2025-01-01", comment: "comment 1"}
+        - {comment_id: "I001_0002", incident_id: "I001", comment_seq: 2, comment_div: "reply_to_register", comment_by: "Mike", comment_date: "2025-01-02", comment: "comment 2"}
+        - {comment_id: "I001_0003", incident_id: "I001", comment_seq: 3, comment_div: "完了へ直接変更", comment_by: "(dummy)", comment_date: "2025-01-03", comment: "(ライブラリ変更などによりステータスを直接完了に変更)"}
+
+  - name: direct_close_same_day
+    model: stg_qaweb__incident_comments
+    given:
+      - input: ref("stg_qaweb__incidents")
+        rows:
+        - {incident_id: "I001", close_date: "2025-01-02"}
+      - input: ref("seed_qaweb__mst_comment_div")
+        rows:
+        - {comment_div: "register", is_closer: false, is_approver: false}
+        - {comment_div: "reply_to_register", is_closer: false, is_approver: false}
+    overrides:
+      macros:
+        get_adjusted_data: |
+          select * from 
+            (values 
+              ('I001', 1, 'register', 'John', '2025-01-01'::date, 'comment 1'),
+              ('I001', 2, 'reply_to_register', 'Mike', '2025-01-02'::date, 'comment 2')
+            ) as t(incident_id, comment_seq, comment_div, comment_by, comment_date, comment)
+    expect:
+      rows:
+        - {comment_id: "I001_0001", incident_id: "I001", comment_seq: 1, comment_div: "register", comment_by: "John", comment_date: "2025-01-01", comment: "comment 1"}
+        - {comment_id: "I001_0002", incident_id: "I001", comment_seq: 2, comment_div: "reply_to_register", comment_by: "Mike", comment_date: "2025-01-02", comment: "comment 2"}
+        - {comment_id: "I001_0003", incident_id: "I001", comment_seq: 3, comment_div: "完了へ直接変更", comment_by: "(dummy)", comment_date: "2025-01-02", comment: "(ライブラリ変更などによりステータスを直接完了に変更)"}
+
+  - name: direct_close_before_last_comment
+    model: stg_qaweb__incident_comments
+    given:
+      - input: ref("stg_qaweb__incidents")
+        rows:
+        - {incident_id: "I001", close_date: "2025-01-01"}
+      - input: ref("seed_qaweb__mst_comment_div")
+        rows:
+        - {comment_div: "register", is_closer: false, is_approver: false}
+        - {comment_div: "reply_to_register", is_closer: false, is_approver: false}
+    overrides:
+      macros:
+        get_adjusted_data: |
+          select * from 
+            (values 
+              ('I001', 1, 'register', 'John', '2025-01-01'::date, 'comment 1'),
+              ('I001', 2, 'reply_to_register', 'Mike', '2025-01-02'::date, 'comment 2')
+            ) as t(incident_id, comment_seq, comment_div, comment_by, comment_date, comment)
+    expect:
+      rows:
+        - {comment_id: "I001_0001", incident_id: "I001", comment_seq: 1, comment_div: "register", comment_by: "John", comment_date: "2025-01-01", comment: "comment 1"}
+        - {comment_id: "I001_0002", incident_id: "I001", comment_seq: 2, comment_div: "reply_to_register", comment_by: "Mike", comment_date: "2025-01-02", comment: "comment 2"}
+ 

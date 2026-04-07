@@ -103,7 +103,7 @@ class TestQaWebDataExtractor:
         mock_post.return_value.status_code = 200
         mock_get = Mock()
         mock_get.return_value.status_code = 200
-        mock_get.return_value.text = '    3,302,302,298,example_category-000001,000003'
+        mock_get.return_value.text = 'example_category-000001'
 
         # Act
         with patch('requests.Session.post', mock_post), patch('requests.Session.get', mock_get):
@@ -140,8 +140,8 @@ class TestQaWebDataExtractor:
         mock_post.return_value.status_code = 200
         mock_get = Mock()
         mock_get.side_effect = [
-            Mock(status_code=200, text='    3,302,302,298,example_category-000001,000003'),
-            Mock(status_code=200, text='    3,302,302,298,new_category-000001,000003')
+            Mock(status_code=200, text='example_category-000001'),
+            Mock(status_code=200, text='new_category-000001')
         ]
 
         # Act
@@ -163,7 +163,7 @@ class TestQaWebDataExtractor:
         # Arrange
         mock_get = Mock()
         mock_get.return_value.status_code = 200
-        mock_get.return_value.text = '    3,302,302,298,example_category-000001,000003'
+        mock_get.return_value.text = 'example_category-000001'
 
         # Act & Assert
         with patch('requests.Session.post', mock_get), patch('requests.Session.get', mock_get):
@@ -193,7 +193,7 @@ class TestQaWebDataExtractor:
         mock_post.return_value.status_code = 200
         mock_get = Mock()
         mock_get.side_effect = [
-            Mock(status_code=200, text='    3,302,302,298,example_category-000001,000003'),
+            Mock(status_code=200, text='example_category-000001'),
             Mock(status_code=200, text='xxx')
         ]
 
@@ -418,10 +418,12 @@ class TestQaWebDataExtractor:
         mock_get = Mock()
         mock_get.return_value.status_code = 200
         mock_get.return_value.text = """
-                <b>QA一覧</b><br>
-                <!--
-                    3,302,302,298,FDP-000001,000003
-                -->
+            <B>QA一覧</B><BR>
+            <!--
+                15595,311,311,307,FDP-000001,000003
+            -->
+            ■ <A href="3table.pl?FDP-000001" target="FRAME2" title="昇順に表示" onClick='return chengchk()'>FDP-000001～</A>
+            <A href="3table2.pl?FDP-000001" target="FRAME2" title="降順に表示" onClick='return chengchk()'>000003</A><BR>
             """
         mock_post = Mock()
         mock_post.side_effect = [
@@ -507,10 +509,12 @@ class TestQaWebDataExtractor:
         mock_get = Mock()
         mock_get.return_value.status_code = 200
         mock_get.return_value.text = """
-                <b>QA一覧</b><br>
-                <!--
-                    3,302,302,298,FDP-000001,000003
-                -->
+            <B>QA一覧</B><BR>
+            <!--
+                15595,311,311,307,FDP-000001,000003
+            -->
+            ■ <A href="3table.pl?FDP-000001" target="FRAME2" title="昇順に表示" onClick='return chengchk()'>FDP-000001～</A>
+            <A href="3table2.pl?FDP-000001" target="FRAME2" title="降順に表示" onClick='return chengchk()'>000003</A><BR>
             """
         mock_post = Mock()
         mock_post.side_effect = [

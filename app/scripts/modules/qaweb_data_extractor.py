@@ -129,7 +129,7 @@ class QaWebDataExtractor :
 
         # check if the category is correctly switched using string in the response.
         # see get_max_qa_no_in_int() for detail
-        qa_no_digests_regex = self.qaweb_info['category'] + '-[0-9]{6},[0-9]{6}'
+        qa_no_digests_regex = self.qaweb_info['category'] + '-[0-9]{6}'
         qa_no_strings = re.findall(qa_no_digests_regex, response.text)
 
         if qa_no_strings is None or len(qa_no_strings) == 0:
@@ -139,22 +139,26 @@ class QaWebDataExtractor :
         """
         get the max qa no of specified category.
 
-        the response from the menu page contains text like following,
-        and we can get max qa no from the commentouted parts.
-        the max no is in the last part of the line. "015142" is the one.
+        the response from the menu page contains the text like following,
+        and we can get max qa no from the first line 
+        which starts with "<A href="3table2.pl?CATEGORY-XXXXXX" 
+        and end with "XXXXXX</A><BR>".  
+        "004346" is the max no for the category "HDSQ" in this example.
 
         --------------
-         <b>QA一覧</b><br>
-        <!--
-            15142,302,302,298,FDP-015101,015142
-        -->
-        ■ <a href="3table.pl?FDP-015101" target="FRAME2" title="昇順に表示" onclick="return chengchk()">FDP-015101～</a>
-        <a href="3table2.pl?FDP-015101" target="FRAME2" title="降順に表示" onclick="return chengchk()">015142</a><br>
-        <!--
-            15142,301,302,298,FDP-015051,015100
-        -->
-        ■ <a href="3table.pl?FDP-015051" target="FRAME2" title="昇順に表示" onclick="return chengchk()">FDP-015051～</a>
-        <a href="3table2.pl?FDP-015051" target="FRAME2" title="降順に表示" onclick="return chengchk()">015100</a><br>
+        <B>QA一覧</B><BR>
+        <A href="3table.pl?HDSQ-004301" target="FRAME2" title="昇順に表示" onClick='return chengchk()'>
+        <IMG SRC="../graphics/green.gif" BORDER=0> HDSQ-004301～</A>
+        <A href="3table2.pl?HDSQ-004301" target="FRAME2" title="降順に表示" onClick='return chengchk()'>004346</A><BR>
+        <A href="3table.pl?HDSQ-004251" target="FRAME2" title="昇順に表示" onClick='return chengchk()'>
+        <IMG SRC="../graphics/green.gif" BORDER=0> HDSQ-004251～</A>
+        <A href="3table2.pl?HDSQ-004251" target="FRAME2" title="降順に表示" onClick='return chengchk()'>004300</A><BR>
+        <A href="3table.pl?HDSQ-004201" target="FRAME2" title="昇順に表示" onClick='return chengchk()'>
+        <IMG SRC="../graphics/green.gif" BORDER=0> HDSQ-004201～</A>
+        <A href="3table2.pl?HDSQ-004201" target="FRAME2" title="降順に表示" onClick='return chengchk()'>004250</A><BR>
+        <A href="3table.pl?HDSQ-004151" target="FRAME2" title="昇順に表示" onClick='return chengchk()'>
+        <IMG SRC="../graphics/green.gif" BORDER=0> HDSQ-004151～</A>
+        <A href="3table2.pl?HDSQ-004151" target="FRAME2" title="降順に表示" onClick='return chengchk()'>004200</A><BR>
 
         """
 
@@ -169,14 +173,14 @@ class QaWebDataExtractor :
             raise ValueError('Failed to get the menu page. http status: ' + str(response.status_code))
 
         # extract the qa no part from the response using regex
-        qa_no_digests_regex = self.qaweb_info['category'] + '-[0-9]{6},[0-9]{6}'
-        qa_no_strings = re.findall(qa_no_digests_regex, response.text)
+        qa_no_digests_regex = r'<A\s+href="3table2\.pl\?' + self.qaweb_info['category'] + '-[0-9]{6}.*([0-9]{6})</A><BR>'
+        qa_no_strings = re.search(qa_no_digests_regex, response.text, re.IGNORECASE)
 
-        if qa_no_strings is None or len(qa_no_strings) == 0:
+        if qa_no_strings is None:
             raise AttributeError(self.err_msg_failed_to_get_max_no)
 
         try :
-            qa_max_no =  int(qa_no_strings[0].split(",")[-1])
+            qa_max_no =  int(qa_no_strings.group(1))
         except ValueError as e:
             raise ValueError(self.err_msg_failed_to_get_max_no) from e
 
